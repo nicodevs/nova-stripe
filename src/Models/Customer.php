@@ -2,13 +2,12 @@
 
 namespace Nicodevs\NovaStripe\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Nicodevs\NovaStripe\Traits\SyncsWithStripe;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Sushi\Sushi;
 
-class Customer extends Model
+class Customer extends BaseModel
 {
-    use Sushi, SyncsWithStripe;
+    use Sushi;
 
     public $incrementing = false;
 
@@ -16,17 +15,53 @@ class Customer extends Model
 
     protected $rows = [];
 
+    protected $service = 'customers';
+
+    protected $expand = ['data.default_source'];
+
     protected $schema = [
         'id' => 'string',
         'name' => 'string',
         'email' => 'string',
+        'address' => 'json',
+        'phone' => 'string',
+        'balance' => 'integer',
+        'livemode' => 'boolean',
+        'delinquent' => 'boolean',
+        'default_source' => 'json',
+        'created' => 'datetime',
     ];
 
-    protected $fillable = [
-        'id',
-        'name',
-        'email',
+    protected $casts = [
+        'default_source' => 'json',
+        'address' => 'json',
+        'created' => 'datetime',
     ];
 
-    protected $service = 'customers';
+    public function charges()
+    {
+        return $this->hasMany(Charge::class);
+    }
+
+    public function subscriptions()
+    {
+        return $this->hasMany(Subscription::class);
+    }
+
+    protected function fullAddress(): Attribute
+    {
+        return Attribute::make(
+            get: function ($value, array $attributes) {
+                $address = json_decode($attributes['address'], true);
+
+                return trim(
+                    $address['line1'] . ' ' .
+                    ($address['line2'] ? $address['line2'] . ' ' : '') .
+                    $address['city'] . ', ' .
+                    $address['country'] . ' ' .
+                    $address['postal_code']
+                );
+            }
+        );
+    }
 }

@@ -7,20 +7,17 @@ use Laravel\Nova\Menu\MenuItem;
 use Laravel\Nova\Menu\MenuSection;
 use Laravel\Nova\Nova;
 use Laravel\Nova\Tool;
+use Nicodevs\NovaStripe\Resources\Charge;
 use Nicodevs\NovaStripe\Resources\Customer;
 use Nicodevs\NovaStripe\Resources\Product;
-use Nicodevs\NovaStripe\Resources\Charge;
 use Nicodevs\NovaStripe\Resources\Subscription;
 
 class NovaStripe extends Tool
 {
-    /**
-     * Perform any tasks that need to happen when the tool is booted.
-     *
-     * @return void
-     */
-    public function boot()
+    public function boot(): void
     {
+        Nova::script('nova-stripe-test', __DIR__ . '/../resources/js/index.js');
+
         Nova::resources([
             Customer::class,
             Product::class,
@@ -29,18 +26,13 @@ class NovaStripe extends Tool
         ]);
     }
 
-    /**
-     * Build the menu that renders the navigation links for the tool.
-     *
-     * @return mixed
-     */
-    public function menu(Request $request)
+    public function menu(Request $request): MenuSection
     {
-        return MenuSection::make('Nova Stripe', [
+        return MenuSection::make('Stripe', [
             MenuItem::make('Products', '/resources/products'),
             MenuItem::make('Customers', '/resources/customers'),
             MenuItem::make('Charges', '/resources/charges'),
             MenuItem::make('Subscriptions', '/resources/subscriptions'),
-        ], 'credit-card')->path('/nova-stripe');
+        ], 'credit-card');
     }
 }

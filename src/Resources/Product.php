@@ -2,16 +2,15 @@
 
 namespace Nicodevs\NovaStripe\Resources;
 
-use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Url;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Laravel\Nova\Resource;
 
-class Product extends Resource
+class Product extends BaseResource
 {
-    public static $displayInNavigation = false;
-
     public static $model = \Nicodevs\NovaStripe\Models\Product::class;
 
     public static $title = 'name';
@@ -21,53 +20,38 @@ class Product extends Resource
         'name',
     ];
 
-    public static function authorizedToCreate(Request $request)
-    {
-        return false;
-    }
-
     public function fields(NovaRequest $request)
     {
         return [
-            ID::make()->sortable(),
+            ID::make()
+                ->hideFromIndex(),
 
             Text::make('Name')
                 ->sortable(),
+
+            Text::make('Price')
+                ->sortable()
+                ->displayUsing(function () {
+                    $currency = Str::upper($this->default_price['currency']) ?? '';
+
+                    return $currency . ' ' . number_format($this->default_price['unit_amount'] / 100, 2);
+                }),
+
+            Text::make('Type')
+                ->displayUsing(function () {
+                    return Str::of($this->default_price['type'])->replace('_', ' ')->title();
+                }),
+
+            Text::make('Recurring Period')
+                ->displayUsing(function () {
+                    return Str::of(data_get($this->default_price, 'recurring.interval', '-'))->title();
+                }),
+
+            Boolean::make('Active'),
+
+            Url::make('Details', 'stripeLink')
+                ->displayUsing(fn ($value) => 'Open in Stripe Dashboard')
+                ->hideFromIndex(),
         ];
-    }
-
-    public function cards(NovaRequest $request)
-    {
-        return [];
-    }
-
-    public function filters(NovaRequest $request)
-    {
-        return [];
-    }
-
-    public function lenses(NovaRequest $request)
-    {
-        return [];
-    }
-
-    public function actions(NovaRequest $request)
-    {
-        return [];
-    }
-
-    public function authorizedToDelete(Request $request)
-    {
-        return false;
-    }
-
-    public function authorizedToReplicate(Request $request)
-    {
-        return false;
-    }
-
-    public function authorizedToUpdate(Request $request)
-    {
-        return false;
     }
 }

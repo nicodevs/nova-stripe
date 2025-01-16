@@ -2,13 +2,11 @@
 
 namespace Nicodevs\NovaStripe\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Nicodevs\NovaStripe\Traits\SyncsWithStripe;
 use Sushi\Sushi;
 
-class Product extends Model
+class Product extends BaseModel
 {
-    use Sushi, SyncsWithStripe;
+    use Sushi;
 
     public $incrementing = false;
 
@@ -16,15 +14,22 @@ class Product extends Model
 
     protected $rows = [];
 
+    protected $service = 'products';
+
+    protected $expand = ['data.default_price'];
+
     protected $schema = [
         'id' => 'string',
         'name' => 'string',
+        'currency' => 'string',
+        'active' => 'boolean',
+        'default_price' => 'json',
+        'recurring' => 'json',
     ];
 
-    protected $fillable = [
-        'id',
-        'name',
+    protected $casts = [
+        'active' => 'boolean',
+        'default_price' => 'json',
+        'recurring' => 'json',
     ];
-
-    protected $service = 'products';
 }

@@ -2,16 +2,17 @@
 
 namespace Nicodevs\NovaStripe\Resources;
 
-use Illuminate\Http\Request;
+use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\Email;
+use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Url;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Laravel\Nova\Resource;
 
-class Customer extends Resource
+class Customer extends BaseResource
 {
-    public static $displayInNavigation = false;
-
     public static $model = \Nicodevs\NovaStripe\Models\Customer::class;
 
     public static $title = 'name';
@@ -22,56 +23,45 @@ class Customer extends Resource
         'email',
     ];
 
-    public static function authorizedToCreate(Request $request)
-    {
-        return false;
-    }
+    public static $with = ['charges', 'subscriptions'];
 
     public function fields(NovaRequest $request)
     {
         return [
-            ID::make()->sortable(),
+            ID::make()
+                ->hideFromIndex(),
 
             Text::make('Name')
                 ->sortable(),
 
-            Text::make('Email')
+            Email::make('Email')->sortable(),
+
+            Text::make('Created')
+                ->displayUsing(fn ($value) => $this->formatDateTime($value))
                 ->sortable(),
+
+            Text::make('Phone')
+                ->hideFromIndex(),
+
+            Text::make('Full Address')
+                ->hideFromIndex(),
+
+            Number::make('Balance')
+                ->hideFromIndex(),
+
+            Boolean::make('Livemode')
+                ->hideFromIndex(),
+
+            Boolean::make('Delinquent')
+                ->hideFromIndex(),
+
+            Url::make('Details', 'stripeLink')
+                ->displayUsing(fn () => 'Open in Stripe Dashboard')
+                ->hideFromIndex(),
+
+            HasMany::make('Charges'),
+
+            HasMany::make('Subscriptions'),
         ];
-    }
-
-    public function cards(NovaRequest $request)
-    {
-        return [];
-    }
-
-    public function filters(NovaRequest $request)
-    {
-        return [];
-    }
-
-    public function lenses(NovaRequest $request)
-    {
-        return [];
-    }
-
-    public function actions(NovaRequest $request)
-    {
-        return [];
-    }
-
-    public function authorizedToDelete(Request $request)
-    {
-        return false;
-    }
-
-    public function authorizedToReplicate(Request $request)
-    {
-        return false;
-    }
-
-    public function authorizedToUpdate(Request $request)
-    {
-        return false;
     }
 }

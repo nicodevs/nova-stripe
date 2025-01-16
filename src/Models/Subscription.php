@@ -2,13 +2,12 @@
 
 namespace Nicodevs\NovaStripe\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Nicodevs\NovaStripe\Traits\SyncsWithStripe;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Sushi\Sushi;
 
-class Subscription extends Model
+class Subscription extends BaseModel
 {
-    use Sushi, SyncsWithStripe;
+    use Sushi;
 
     public $incrementing = false;
 
@@ -16,15 +15,44 @@ class Subscription extends Model
 
     protected $rows = [];
 
+    protected $service = 'subscriptions';
+
+    protected $expand = ['data.default_payment_method'];
+
     protected $schema = [
         'id' => 'string',
+        'customer_id' => 'string',
+        'created' => 'datetime',
+        'current_period_start' => 'datetime',
+        'current_period_end' => 'datetime',
+        'currency' => 'string',
+        'metadata' => 'json',
+        'status' => 'string',
+        'cancel_at' => 'timestamp',
+        'canceled_at' => 'timestamp',
+        'ended_at' => 'timestamp',
+        'trial_start' => 'timestamp',
+        'trial_end' => 'timestamp',
+        'default_payment_method' => 'json',
         'description' => 'string',
+        'items' => 'json',
     ];
 
-    protected $fillable = [
-        'id',
-        'description',
+    protected $casts = [
+        'created' => 'datetime',
+        'current_period_start' => 'datetime',
+        'current_period_end' => 'datetime',
+        'cancel_at' => 'datetime',
+        'canceled_at' => 'datetime',
+        'ended_at' => 'datetime',
+        'trial_start' => 'datetime',
+        'trial_end' => 'datetime',
+        'default_payment_method' => 'json',
+        'items' => 'json',
     ];
 
-    protected $service = 'subscriptions';
+    public function customer(): BelongsTo
+    {
+        return $this->belongsTo(Customer::class);
+    }
 }

@@ -2,16 +2,19 @@
 
 namespace Nicodevs\NovaStripe\Resources;
 
-use Illuminate\Http\Request;
+use Laravel\Nova\Fields\Badge;
+use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\KeyValue;
+use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Url;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Laravel\Nova\Resource;
+use Laravel\Nova\Panel;
 
-class Charge extends Resource
+class Charge extends BaseResource
 {
-    public static $displayInNavigation = false;
-
     public static $model = \Nicodevs\NovaStripe\Models\Charge::class;
 
     public static $title = 'id';
@@ -21,53 +24,156 @@ class Charge extends Resource
         'amount',
     ];
 
-    public static function authorizedToCreate(Request $request)
-    {
-        return false;
-    }
+    public static $with = ['customer'];
 
     public function fields(NovaRequest $request)
     {
         return [
-            ID::make()->sortable(),
+            ID::make()->hideFromIndex(),
 
-            Text::make('Amount')
+            BelongsTo::make('Customer')->sortable(),
+
+            Number::make('Amount')
+                ->sortable()
+                ->displayUsing(fn ($value) => $this->formatAmount($value)),
+
+            Badge::make('Status')->map([
+                'canceled' => 'danger',
+                'succeeded' => 'success',
+                'pending' => 'warning',
+                'failed' => 'danger',
+                'requires_capture' => 'info',
+            ])->sortable(),
+
+            Boolean::make('Paid')->sortable(),
+
+            Text::make('Payment Method')->displayUsing(function ($value) {
+                $details = $this->payment_method_details;
+
+                if (isset($details['type']) && $details['type'] === 'card') {
+                    $card = $details['card'] ?? [];
+                    $brand = strtoupper($card['brand'] ?? 'CARD');
+                    $last4 = $card['last4'] ?? '••••';
+
+                    return "{$brand} •••• {$last4}";
+                }
+
+                return strtoupper($details['type'] ?? 'UNKNOWN');
+            })->sortable(),
+
+            Text::make('Description')->sortable(),
+
+            Text::make('Created')
+                ->displayUsing(fn ($value) => $this->formatDateTime($value))
                 ->sortable(),
+
+            Url::make('Payment', 'stripeLink')
+                ->displayUsing(fn ($value) => 'Open in Stripe Dashboard')
+                ->hideFromIndex(),
+
+            KeyValue::make('Metadata')->rules('json'),
+
+            Panel::make('Receipt and Invoice', $this->receiptAndInvoiceFields()),
+
+            Panel::make('Disputes and Refunds', $this->disputeAndRefundFields()),
+
+            Panel::make('Application Details', $this->applicationFields()),
+
+            Panel::make('Additional Details', $this->additionalFields()),
         ];
     }
 
-    public function cards(NovaRequest $request)
+    protected function receiptAndInvoiceFields()
     {
-        return [];
+        return [
+            Url::make('Receipt', 'receipt_url')
+                ->displayUsing(fn ($value) => 'Open Receipt')
+                ->hideFromIndex(),
+
+            Text::make('Receipt Email')->hideFromIndex(),
+
+            Text::make('Receipt Number')->hideFromIndex(),
+
+            Text::make('Invoice ID', 'invoice')->hideFromIndex(),
+
+            KeyValue::make('Billing Details')->rules('json'),
+        ];
     }
 
-    public function filters(NovaRequest $request)
+    protected function disputeAndRefundFields()
     {
-        return [];
+        return [
+            Boolean::make('Disputed')->hideFromIndex(),
+
+            Text::make('Dispute')->hideFromIndex(),
+
+            Boolean::make('Refunded')->hideFromIndex(),
+
+            Number::make('Amount Refunded')
+                ->displayUsing(fn ($value) => $this->formatAmount($value))
+                ->hideFromIndex(),
+        ];
     }
 
-    public function lenses(NovaRequest $request)
+    protected function applicationFields()
     {
-        return [];
+        return [
+            Text::make('Application ID', 'application')->hideFromIndex(),
+
+            Text::make('Application Fee ID', 'application_fee')->hideFromIndex(),
+
+            Number::make('Application Fee Amount')
+                ->displayUsing(fn ($value) => $this->formatAmount($value))
+                ->hideFromIndex(),
+        ];
     }
 
-    public function actions(NovaRequest $request)
+    protected function additionalFields()
     {
-        return [];
-    }
+        return [
+            Text::make('Balance Transaction ID', 'balance_transaction')
+                ->hideFromIndex(),
 
-    public function authorizedToDelete(Request $request)
-    {
-        return false;
-    }
+            Text::make('Calculated Statement Descriptor')->hideFromIndex(),
 
-    public function authorizedToReplicate(Request $request)
-    {
-        return false;
-    }
+            Text::make('Destination')->hideFromIndex(),
 
-    public function authorizedToUpdate(Request $request)
-    {
-        return false;
+            Text::make('Failure Balance Transaction')->hideFromIndex(),
+
+            Text::make('Failure Code')->hideFromIndex(),
+
+            Text::make('Failure Message')->hideFromIndex(),
+
+            Boolean::make('Live Mode')->hideFromIndex(),
+
+            Text::make('On Behalf Of')->hideFromIndex(),
+
+            Text::make('Order')->hideFromIndex(),
+
+            Text::make('Review')->hideFromIndex(),
+
+            Text::make('Source Transfer')->hideFromIndex(),
+
+            Text::make('Statement Descriptor')->hideFromIndex(),
+
+            Text::make('Statement Descriptor Suffix')->hideFromIndex(),
+
+            Text::make('Transfer Group')->hideFromIndex(),
+
+            KeyValue::make('Shipping')
+                ->rules('json'),
+
+            KeyValue::make('Fraud Details')
+                ->rules('json'),
+
+            KeyValue::make('Source')
+                ->rules('json'),
+
+            KeyValue::make('Transfer Data')
+                ->rules('json'),
+
+            KeyValue::make('Outcome')
+                ->rules('json'),
+        ];
     }
 }

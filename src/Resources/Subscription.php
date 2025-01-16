@@ -2,72 +2,78 @@
 
 namespace Nicodevs\NovaStripe\Resources;
 
-use Illuminate\Http\Request;
+use Laravel\Nova\Fields\Badge;
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Url;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Laravel\Nova\Resource;
+use Nicodevs\NovaStripe\Models\Product;
 
-class Subscription extends Resource
+class Subscription extends BaseResource
 {
-    public static $displayInNavigation = false;
-
     public static $model = \Nicodevs\NovaStripe\Models\Subscription::class;
 
     public static $title = 'description';
 
     public static $search = [
         'id',
-        'description',
     ];
 
-    public static function authorizedToCreate(Request $request)
-    {
-        return false;
-    }
+    public static $with = ['customer'];
 
     public function fields(NovaRequest $request)
     {
         return [
-            ID::make()->sortable(),
+            ID::make()->hideFromIndex(),
+
+            BelongsTo::make('Customer')->sortable(),
+
+            Badge::make('Status')->map([
+                'active' => 'success',
+                'incomplete' => 'warning',
+                'incomplete_expired' => 'danger',
+                'past_due' => 'warning',
+                'canceled' => 'danger',
+                'unpaid' => 'danger',
+                'trialing' => 'info',
+                'paused' => 'info',
+            ])->sortable(),
 
             Text::make('Description')
                 ->sortable(),
+
+            ...collect([
+                'Created',
+                'Current Period Start',
+                'Current Period End',
+            ])->map(function ($key) {
+                return Text::make($key)
+                    ->displayUsing(fn ($value) => $this->formatDateTime($value));
+            }),
+
+            ...collect([
+                'Trial Start',
+                'Trial End',
+                'Cancel At',
+                'Canceled At',
+                'Ended At',
+            ])->map(function ($key) {
+                return Text::make($key)
+                    ->displayUsing(fn ($value) => $this->formatDateTime($value))
+                    ->hideFromIndex();
+            }),
+
+            Text::make('Products', function () {
+                return Product::whereIn('id', collect($this->items['data'])->pluck('price.product'))
+                    ->get()
+                    ->map(fn ($product) => '<a class="link-default" href="/nova/resources/products/' . $product->id . '">' . $product->name . '</a>')
+                    ->join('<br>');
+            })->asHtml()->hideFromIndex(),
+
+            Url::make('Details', 'stripeLink')
+                ->displayUsing(fn () => 'Open in Stripe Dashboard')
+                ->hideFromIndex(),
         ];
-    }
-
-    public function cards(NovaRequest $request)
-    {
-        return [];
-    }
-
-    public function filters(NovaRequest $request)
-    {
-        return [];
-    }
-
-    public function lenses(NovaRequest $request)
-    {
-        return [];
-    }
-
-    public function actions(NovaRequest $request)
-    {
-        return [];
-    }
-
-    public function authorizedToDelete(Request $request)
-    {
-        return false;
-    }
-
-    public function authorizedToReplicate(Request $request)
-    {
-        return false;
-    }
-
-    public function authorizedToUpdate(Request $request)
-    {
-        return false;
     }
 }
