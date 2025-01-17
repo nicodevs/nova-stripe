@@ -8,7 +8,6 @@ use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Url;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Customer extends BaseResource
@@ -55,8 +54,9 @@ class Customer extends BaseResource
             Boolean::make('Delinquent')
                 ->hideFromIndex(),
 
-            Url::make('Details', 'stripeLink')
-                ->displayUsing(fn () => 'Open in Stripe Dashboard')
+            Text::make('Details', 'stripeLink')
+                ->displayUsing(fn ($value) => '<a href="' . $value . '" target="_blank">Open in Stripe Dashboard</a>')
+                ->asHtml()
                 ->hideFromIndex(),
 
             HasMany::make('Charges'),

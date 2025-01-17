@@ -9,7 +9,6 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\KeyValue;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Url;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
 
@@ -67,8 +66,9 @@ class Charge extends BaseResource
                 ->displayUsing(fn ($value) => $this->formatDateTime($value))
                 ->sortable(),
 
-            Url::make('Payment', 'stripeLink')
-                ->displayUsing(fn ($value) => 'Open in Stripe Dashboard')
+            Text::make('Payment', 'stripeLink')
+                ->displayUsing(fn ($value) => '<a href="' . $value . '" target="_blank">Open in Stripe Dashboard</a>')
+                ->asHtml()
                 ->hideFromIndex(),
 
             KeyValue::make('Metadata')->rules('json'),
@@ -86,8 +86,9 @@ class Charge extends BaseResource
     protected function receiptAndInvoiceFields()
     {
         return [
-            Url::make('Receipt', 'receipt_url')
-                ->displayUsing(fn ($value) => 'Open Receipt')
+            Text::make('Receipt', 'receipt_url')
+                ->displayUsing(fn ($value) => '<a href="' . $value . '" target="_blank">Open Receipt</a>')
+                ->asHtml()
                 ->hideFromIndex(),
 
             Text::make('Receipt Email')->hideFromIndex(),

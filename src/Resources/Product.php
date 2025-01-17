@@ -6,7 +6,6 @@ use Illuminate\Support\Str;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Url;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Product extends BaseResource
@@ -49,9 +48,11 @@ class Product extends BaseResource
 
             Boolean::make('Active'),
 
-            Url::make('Details', 'stripeLink')
-                ->displayUsing(fn ($value) => 'Open in Stripe Dashboard')
+            Text::make('Details', 'stripeLink')
+                ->displayUsing(fn ($value) => '<a href="' . $value . '" target="_blank">Open in Stripe Dashboard</a>')
+                ->asHtml()
                 ->hideFromIndex(),
+
         ];
     }
 }

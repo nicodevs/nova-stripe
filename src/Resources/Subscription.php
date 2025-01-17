@@ -6,7 +6,6 @@ use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Url;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Nicodevs\NovaStripe\Models\Product;
 
@@ -71,9 +70,11 @@ class Subscription extends BaseResource
                     ->join('<br>');
             })->asHtml()->hideFromIndex(),
 
-            Url::make('Details', 'stripeLink')
-                ->displayUsing(fn () => 'Open in Stripe Dashboard')
+            Text::make('Details', 'stripeLink')
+                ->displayUsing(fn ($value) => '<a href="' . $value . '" target="_blank">Open in Stripe Dashboard</a>')
+                ->asHtml()
                 ->hideFromIndex(),
+
         ];
     }
 }
