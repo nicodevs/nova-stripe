@@ -8,6 +8,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.3|^8.0",
+        "stripe/stripe-php": ">=5.0",
         "calebporzio/sushi": "^2.5"
     },
     "autoload": {
@@ -28,6 +29,7 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require-dev": {
-        "tightenco/duster": "^3.1"
+        "tightenco/duster": "^3.1",
+        "laravel/nova": "^4.0"
     }
 }
