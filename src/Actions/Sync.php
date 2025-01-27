@@ -50,7 +50,7 @@ class Sync extends Action
                 ->rules('required'),
 
             Boolean::make('Run in the background', 'queue')
-                ->help('Check this if you want the sync to run in the background (recommended for large datasets, e.g. 5,000+ records or more). You will receive a notification when the sync is complete.')
+                ->help('Check this if you want the sync to run in the background (recommended for large datasets, e.g. 1,000+ records or more). You will receive a notification when the sync is complete.')
                 ->default(true),
         ];
     }
