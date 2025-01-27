@@ -46,13 +46,12 @@ class Product extends BaseResource
                     return Str::of(data_get($this->default_price, 'recurring.interval', '-'))->title();
                 }),
 
-            Boolean::make('Active'),
+            Boolean::make('Active')->filterable(),
 
             Text::make('Details', 'stripeLink')
                 ->displayUsing(fn ($value) => '<a href="' . $value . '" target="_blank">Open in Stripe Dashboard</a>')
                 ->asHtml()
                 ->hideFromIndex(),
-
         ];
     }
 }

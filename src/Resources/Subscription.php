@@ -4,6 +4,7 @@ namespace Nicodevs\NovaStripe\Resources;
 
 use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -37,7 +38,7 @@ class Subscription extends BaseResource
                 'unpaid' => 'danger',
                 'trialing' => 'info',
                 'paused' => 'info',
-            ])->sortable(),
+            ])->sortable()->filterable(),
 
             Text::make('Description')
                 ->sortable(),
@@ -47,8 +48,7 @@ class Subscription extends BaseResource
                 'Current Period Start',
                 'Current Period End',
             ])->map(function ($key) {
-                return Text::make($key)
-                    ->displayUsing(fn ($value) => $this->formatDateTime($value));
+                return Date::make($key);
             }),
 
             ...collect([
@@ -58,9 +58,9 @@ class Subscription extends BaseResource
                 'Canceled At',
                 'Ended At',
             ])->map(function ($key) {
-                return Text::make($key)
-                    ->displayUsing(fn ($value) => $this->formatDateTime($value))
-                    ->hideFromIndex();
+                return Date::make($key)
+                    ->hideFromIndex()
+                    ->filterable();
             }),
 
             Text::make('Products', function () {
@@ -74,7 +74,6 @@ class Subscription extends BaseResource
                 ->displayUsing(fn ($value) => '<a href="' . $value . '" target="_blank">Open in Stripe Dashboard</a>')
                 ->asHtml()
                 ->hideFromIndex(),
-
         ];
     }
 }

@@ -3,6 +3,7 @@
 namespace Nicodevs\NovaStripe\Resources;
 
 use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\Email;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
@@ -35,9 +36,9 @@ class Customer extends BaseResource
 
             Email::make('Email')->sortable(),
 
-            Text::make('Created')
-                ->displayUsing(fn ($value) => $this->formatDateTime($value))
-                ->sortable(),
+            DateTime::make('Created')
+                ->sortable()
+                ->filterable(),
 
             Text::make('Phone')
                 ->hideFromIndex(),

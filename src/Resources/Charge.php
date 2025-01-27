@@ -5,6 +5,7 @@ namespace Nicodevs\NovaStripe\Resources;
 use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\KeyValue;
 use Laravel\Nova\Fields\Number;
@@ -42,9 +43,9 @@ class Charge extends BaseResource
                 'pending' => 'warning',
                 'failed' => 'danger',
                 'requires_capture' => 'info',
-            ])->sortable(),
+            ])->sortable()->filterable(),
 
-            Boolean::make('Paid')->sortable(),
+            Boolean::make('Paid')->sortable()->filterable(),
 
             Text::make('Payment Method')->displayUsing(function ($value) {
                 $details = $this->payment_method_details;
@@ -62,9 +63,7 @@ class Charge extends BaseResource
 
             Text::make('Description')->sortable(),
 
-            Text::make('Created')
-                ->displayUsing(fn ($value) => $this->formatDateTime($value))
-                ->sortable(),
+            DateTime::make('Created')->sortable()->filterable(),
 
             Text::make('Payment', 'stripeLink')
                 ->displayUsing(fn ($value) => '<a href="' . $value . '" target="_blank">Open in Stripe Dashboard</a>')

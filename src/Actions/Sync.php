@@ -2,59 +2,56 @@
 
 namespace Nicodevs\NovaStripe\Actions;
 
-use Exception;
-use Illuminate\Bus\Queueable;
-use Illuminate\Queue\InteractsWithQueue;
 use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Actions\ActionResponse;
 use Laravel\Nova\Fields\ActionFields;
+use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\BooleanGroup;
-// use Illuminate\Contracts\Queue\ShouldQueue;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Nicodevs\NovaStripe\Models\Charge;
-use Nicodevs\NovaStripe\Models\Customer;
-use Nicodevs\NovaStripe\Models\Product;
-use Nicodevs\NovaStripe\Models\Subscription;
+use Nicodevs\NovaStripe\Jobs\SyncWithStripe;
 
 class Sync extends Action
 {
-    use InteractsWithQueue, Queueable;
-
     public $name = 'Sync With Stripe';
 
     public $confirmText = null;
 
     public $confirmButtonText = 'Sync With Stripe';
 
+    protected $user;
+
+    public function __construct()
+    {
+        $this->user = request()->user();
+    }
+
     public function handle(ActionFields $fields)
     {
-        foreach (array_keys(array_filter($fields->resources)) as $resource) {
-            $model = match ($resource) {
-                'Products' => app(Product::class),
-                'Customers' => app(Customer::class),
-                'Charges' => app(Charge::class),
-                'Subscriptions' => app(Subscription::class),
-                default => throw new Exception("Model not found for resource: {$resource}"),
-            };
-
-            $model->sync();
+        if ($fields->queue) {
+            SyncWithStripe::dispatch($fields->resources, $this->user);
+        } else {
+            SyncWithStripe::dispatchSync($fields->resources, $this->user);
         }
 
-        return ActionResponse::message('Sync completed!');
+        return ActionResponse::message($fields->queue ? 'Sync started!' : 'Sync completed!');
     }
 
     public function fields(NovaRequest $request)
     {
         return [
-            BooleanGroup::make('Select the resources you wish to sync:', 'resources')
+            BooleanGroup::make('Resources', 'resources')
                 ->options([
                     'Products',
                     'Customers',
                     'Charges',
                     'Subscriptions',
                 ])
-                ->rules('required')
-                ->stacked(),
+                ->help('Check all the resources you wish to sync with Stripe.')
+                ->rules('required'),
+
+            Boolean::make('Run in the background', 'queue')
+                ->help('Check this if you want the sync to run in the background (recommended for large datasets, e.g. 5,000+ records or more). You will receive a notification when the sync is complete.')
+                ->default(true),
         ];
     }
 }
