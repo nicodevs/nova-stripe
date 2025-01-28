@@ -18,14 +18,7 @@ class SyncWithStripe implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $resources;
-    protected $user;
-
-    public function __construct($resources, $user)
-    {
-        $this->resources = $resources;
-        $this->user = $user;
-    }
+    public function __construct(protected $resources, protected $user) {}
 
     public function handle()
     {

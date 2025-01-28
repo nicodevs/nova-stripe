@@ -12,7 +12,7 @@ class Authorize
 {
     public function handle(Request $request, $next): Response
     {
-        $tool = collect(Nova::registeredTools())->first([$this, 'matchesTool']);
+        $tool = collect(Nova::registeredTools())->first($this->matchesTool(...));
 
         return optional($tool)->authorize($request) ? $next($request) : abort(403);
     }

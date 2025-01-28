@@ -52,9 +52,7 @@ class Subscription extends BaseResource
                 'Created',
                 'Current Period Start',
                 'Current Period End',
-            ])->map(function ($key) {
-                return Date::make($key);
-            }),
+            ])->map(fn ($key) => Date::make($key)),
 
             ...collect([
                 'Trial Start',
@@ -62,18 +60,14 @@ class Subscription extends BaseResource
                 'Cancel At',
                 'Canceled At',
                 'Ended At',
-            ])->map(function ($key) {
-                return Date::make($key)
-                    ->hideFromIndex()
-                    ->filterable();
-            }),
+            ])->map(fn ($key) => Date::make($key)
+                ->hideFromIndex()
+                ->filterable()),
 
-            Text::make('Products', function () {
-                return Product::whereIn('id', collect($this->items['data'])->pluck('price.product'))
-                    ->get()
-                    ->map(fn ($product) => '<a class="link-default" href="/nova/resources/products/' . $product->id . '">' . $product->name . '</a>')
-                    ->join('<br>');
-            })->asHtml()->hideFromIndex(),
+            Text::make('Products', fn () => Product::whereIn('id', collect($this->items['data'])->pluck('price.product'))
+                ->get()
+                ->map(fn ($product) => '<a class="link-default" href="/nova/resources/products/' . $product->id . '">' . $product->name . '</a>')
+                ->join('<br>'))->asHtml()->hideFromIndex(),
 
             Text::make('Details', 'stripeLink')
                 ->displayUsing(fn ($value) => '<a href="' . $value . '" target="_blank">Open in Stripe Dashboard</a>')
