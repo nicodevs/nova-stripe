@@ -25,6 +25,11 @@ class Customer extends BaseResource
 
     public static $with = ['charges', 'subscriptions'];
 
+    public static function uriKey()
+    {
+        return 'stripe-customers';
+    }
+
     public function fields(NovaRequest $request)
     {
         return [

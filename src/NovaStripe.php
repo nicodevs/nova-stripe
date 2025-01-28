@@ -16,7 +16,7 @@ class NovaStripe extends Tool
 {
     public function boot(): void
     {
-        Nova::script('nova-stripe-test', __DIR__ . '/../resources/js/index.js');
+        Nova::script('nova-stripe', __DIR__ . '/../resources/js/index.js');
 
         Nova::resources([
             Customer::class,
@@ -29,10 +29,10 @@ class NovaStripe extends Tool
     public function menu(Request $request): MenuSection
     {
         return MenuSection::make('Stripe', [
-            MenuItem::make('Products', '/resources/products'),
-            MenuItem::make('Customers', '/resources/customers'),
-            MenuItem::make('Charges', '/resources/charges'),
-            MenuItem::make('Subscriptions', '/resources/subscriptions'),
+            MenuItem::make('Products', '/resources/stripe-products'),
+            MenuItem::make('Customers', '/resources/stripe-customers'),
+            MenuItem::make('Charges', '/resources/stripe-charges'),
+            MenuItem::make('Subscriptions', '/resources/stripe-subscriptions'),
         ], 'credit-card');
     }
 }

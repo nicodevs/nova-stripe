@@ -5,6 +5,7 @@ namespace Nicodevs\NovaStripe\Models;
 use Exception;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 use Stripe\ApiResource;
 use Stripe\Service\ChargeService;
 use Stripe\Service\CustomerService;
@@ -49,6 +50,8 @@ abstract class BaseModel extends Model
                 } else {
                     $result[$key] = $fieldValue;
                 }
+            } elseif ($value === 'datetime') {
+                $result[$key] = Carbon::createFromTimestamp($fieldValue)->toDateTimeString();
             } else {
                 $result[$key] = $key === 'customer_id' ? $item->customer : $fieldValue;
             }

@@ -26,6 +26,11 @@ class Charge extends BaseResource
 
     public static $with = ['customer'];
 
+    public static function uriKey()
+    {
+        return 'stripe-charges';
+    }
+
     public function fields(NovaRequest $request)
     {
         return [

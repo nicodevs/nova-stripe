@@ -22,6 +22,11 @@ class Subscription extends BaseResource
 
     public static $with = ['customer'];
 
+    public static function uriKey()
+    {
+        return 'stripe-subscriptions';
+    }
+
     public function fields(NovaRequest $request)
     {
         return [

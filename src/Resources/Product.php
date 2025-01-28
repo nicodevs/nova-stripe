@@ -19,6 +19,11 @@ class Product extends BaseResource
         'name',
     ];
 
+    public static function uriKey()
+    {
+        return 'stripe-products';
+    }
+
     public function fields(NovaRequest $request)
     {
         return [
