@@ -87,7 +87,7 @@ class Charge extends BaseModel
     protected function stripeLink(): Attribute
     {
         return Attribute::make(
-            get: fn ($value, array $attributes) => 'https://dashboard.stripe.com/payments/' . $attributes['payment_intent'],
+            get: fn ($value, array $attributes): string => 'https://dashboard.stripe.com/payments/' . $attributes['payment_intent'],
         );
     }
 }

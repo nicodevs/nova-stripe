@@ -14,7 +14,7 @@ class Sync extends Action
 {
     public $name = 'Sync With Stripe';
 
-    public $confirmText = null;
+    public $confirmText;
 
     public $confirmButtonText = 'Sync With Stripe';
 

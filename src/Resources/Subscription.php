@@ -66,11 +66,11 @@ class Subscription extends BaseResource
 
             Text::make('Products', fn () => Product::whereIn('id', collect($this->items['data'])->pluck('price.product'))
                 ->get()
-                ->map(fn ($product) => '<a class="link-default" href="/nova/resources/products/' . $product->id . '">' . $product->name . '</a>')
+                ->map(fn ($product): string => '<a class="link-default" href="/nova/resources/products/' . $product->id . '">' . $product->name . '</a>')
                 ->join('<br>'))->asHtml()->hideFromIndex(),
 
             Text::make('Details', 'stripeLink')
-                ->displayUsing(fn ($value) => '<a href="' . $value . '" target="_blank">Open in Stripe Dashboard</a>')
+                ->displayUsing(fn ($value): string => '<a href="' . $value . '" target="_blank" class="link-default">Open in Stripe Dashboard</a>')
                 ->asHtml()
                 ->hideFromIndex(),
         ];

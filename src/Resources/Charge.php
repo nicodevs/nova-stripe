@@ -71,7 +71,7 @@ class Charge extends BaseResource
             DateTime::make('Created')->sortable()->filterable(),
 
             Text::make('Payment', 'stripeLink')
-                ->displayUsing(fn ($value) => '<a href="' . $value . '" target="_blank">Open in Stripe Dashboard</a>')
+                ->displayUsing(fn ($value): string => '<a href="' . $value . '" target="_blank" class="link-default">Open in Stripe Dashboard</a>')
                 ->asHtml()
                 ->hideFromIndex(),
 
@@ -91,7 +91,7 @@ class Charge extends BaseResource
     {
         return [
             Text::make('Receipt', 'receipt_url')
-                ->displayUsing(fn ($value) => '<a href="' . $value . '" target="_blank">Open Receipt</a>')
+                ->displayUsing(fn ($value): string => '<a href="' . $value . '" target="_blank">Open Receipt</a>')
                 ->asHtml()
                 ->hideFromIndex(),
 

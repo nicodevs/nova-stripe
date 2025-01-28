@@ -50,7 +50,7 @@ class Product extends BaseResource
             Boolean::make('Active')->filterable(),
 
             Text::make('Details', 'stripeLink')
-                ->displayUsing(fn ($value) => '<a href="' . $value . '" target="_blank">Open in Stripe Dashboard</a>')
+                ->displayUsing(fn ($value): string => '<a href="' . $value . '" target="_blank" class="link-default">Open in Stripe Dashboard</a>')
                 ->asHtml()
                 ->hideFromIndex(),
         ];

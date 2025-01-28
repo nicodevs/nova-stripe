@@ -63,14 +63,14 @@ abstract class BaseModel extends Model
     protected function stripeLink(): Attribute
     {
         return Attribute::make(
-            get: fn ($value, array $attributes) => 'https://dashboard.stripe.com/' . $this->service . '/' . $attributes['id'],
+            get: fn ($value, array $attributes): string => 'https://dashboard.stripe.com/' . $this->service . '/' . $attributes['id'],
         );
     }
 
     private function getService(): ProductService|CustomerService|ChargeService|SubscriptionService
     {
         if (! property_exists($this, 'service') || empty($this->service)) {
-            throw new Exception("The 'service' property must be defined in the class using the SyncsWithStripe trait.");
+            throw new Exception("The 'service' property must be defined and valid.");
         }
 
         $stripe = new StripeClient(config('services.stripe.secret'));

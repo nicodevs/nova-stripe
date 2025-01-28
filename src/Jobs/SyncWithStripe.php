@@ -20,7 +20,7 @@ class SyncWithStripe implements ShouldQueue
 
     public function __construct(protected $resources, protected $user) {}
 
-    public function handle()
+    public function handle(): void
     {
         foreach (array_keys(array_filter($this->resources)) as $resource) {
             $model = match ($resource) {
@@ -39,7 +39,7 @@ class SyncWithStripe implements ShouldQueue
         }
     }
 
-    public function failed()
+    public function failed(): void
     {
         $this->user->notify(
             NovaNotification::make()->message('The sync process has failed. Please try again.')
