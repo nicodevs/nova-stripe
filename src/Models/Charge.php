@@ -76,6 +76,7 @@ class Charge extends BaseModel
         'shipping' => 'json',
         'source' => 'json',
         'transfer_data' => 'json',
+        'created' => 'datetime',
     ];
 
     public function customer(): BelongsTo
