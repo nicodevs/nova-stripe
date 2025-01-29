@@ -6,12 +6,7 @@ use Exception;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
-use Stripe\ApiResource;
-use Stripe\Service\ChargeService;
-use Stripe\Service\CustomerService;
-use Stripe\Service\ProductService;
-use Stripe\Service\SubscriptionService;
-use Stripe\StripeClient;
+use Nicodevs\NovaStripe\Services\StripeClientService;
 
 abstract class BaseModel extends Model
 {
@@ -35,7 +30,7 @@ abstract class BaseModel extends Model
         return $records;
     }
 
-    public function prepareForInsert(ApiResource $item): array
+    public function prepareForInsert(object $item): array
     {
         $result = [];
 
@@ -67,14 +62,14 @@ abstract class BaseModel extends Model
         );
     }
 
-    private function getService(): ProductService|CustomerService|ChargeService|SubscriptionService
+    private function getService()
     {
         if (! property_exists($this, 'service') || empty($this->service)) {
             throw new Exception("The 'service' property must be defined and valid.");
         }
 
-        $stripe = new StripeClient(config('services.stripe.secret'));
+        $client = app(StripeClientService::class);
 
-        return $stripe->getService($this->service);
+        return $client->getService($this->service);
     }
 }
