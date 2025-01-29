@@ -46,7 +46,7 @@ abstract class BaseModel extends Model
                     $result[$key] = $fieldValue;
                 }
             } elseif ($value === 'datetime') {
-                $result[$key] = Carbon::createFromTimestamp($fieldValue)->toDateTimeString();
+                $result[$key] = $fieldValue ? Carbon::createFromTimestamp($fieldValue)->toDateTimeString() : null;
             } else {
                 $result[$key] = $key === 'customer_id' ? $item->customer : $fieldValue;
             }

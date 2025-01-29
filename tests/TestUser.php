@@ -25,7 +25,7 @@ class TestUser extends BaseUser
          * will handle this quickly, ensuring we can interact with the User model.
          */
         if (! Schema::hasTable('users')) {
-            Schema::create('users', function (Blueprint $table) {
+            Schema::create('users', function (Blueprint $table): void {
                 $table->id();
                 $table->string('name');
                 $table->string('email')->unique();

@@ -4,7 +4,7 @@ use Nicodevs\NovaStripe\Models\Charge;
 use Nicodevs\NovaStripe\Services\StripeClientService;
 use Stripe\Service\ChargeService;
 
-beforeEach(function () {
+beforeEach(function (): void {
     $this->mockStripeClientService = Mockery::mock(StripeClientService::class);
     $this->mockChargeService = Mockery::mock(ChargeService::class);
 
@@ -48,11 +48,11 @@ beforeEach(function () {
 
     app()->instance(StripeClientService::class, $this->mockStripeClientService);
 
-    $this->chargeModel = new Charge([], $this->mockStripeClientService);
+    $this->model = new Charge;
 });
 
-it('performs sync operation', function () {
-    $result = $this->chargeModel->sync();
+it('performs sync operation', function (): void {
+    $result = $this->model->sync();
 
     expect($result)->toHaveCount(2);
 
@@ -67,20 +67,20 @@ it('performs sync operation', function () {
     expect($result[1]['transfer_data'])->toBe(json_encode(['foo' => 'bar']));
 });
 
-it('model queries correctly after sync operation', function () {
-    $this->chargeModel->sync();
+it('queries correctly after sync operation', function (): void {
+    $this->model->sync();
 
-    $charges = $this->chargeModel->all();
-    expect($charges)->toHaveCount(2);
+    $items = $this->model->all();
+    expect($items)->toHaveCount(2);
 
-    $charge = $this->chargeModel->where('amount', 500)->first();
-    expect($charge->id)->toBe('ch_2');
-    expect($charge->transfer_data)->toBe(['foo' => 'bar']);
+    $item = $this->model->where('amount', 500)->first();
+    expect($item->id)->toBe('ch_2');
+    expect($item->transfer_data)->toBe(['foo' => 'bar']);
 });
 
-it('builds correct stripe link attribute', function () {
-    $this->chargeModel->sync();
+it('builds correct stripe link attribute', function (): void {
+    $this->model->sync();
 
-    $charge = $this->chargeModel->where('amount', 500)->first();
-    expect($charge->stripe_link)->toBe('https://dashboard.stripe.com/payments/pi_456');
+    $item = $this->model->where('amount', 500)->first();
+    expect($item->stripe_link)->toBe('https://dashboard.stripe.com/payments/pi_456');
 });

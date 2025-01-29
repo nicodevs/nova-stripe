@@ -9,14 +9,14 @@ use Nicodevs\NovaStripe\Models\Product;
 use Nicodevs\NovaStripe\Models\Subscription;
 use Nicodevs\NovaStripe\Tests\TestUser;
 
-beforeEach(function () {
+beforeEach(function (): void {
     $this->user = TestUser::create([
         'name' => fake()->name(),
         'email' => fake()->email(),
     ]);
 });
 
-it('syncs resources and notifies the user', function () {
+it('syncs resources and notifies the user', function (): void {
     Notification::fake();
 
     $mockProduct = Mockery::mock(Product::class);
@@ -40,11 +40,11 @@ it('syncs resources and notifies the user', function () {
     Notification::assertSentTo(
         notifiable: $this->user,
         notification: NovaNotification::class,
-        callback: fn ($notification) => str_contains($notification->message, 'sync has completed')
+        callback: fn ($notification): bool => str_contains((string) $notification->message, 'sync has completed')
     );
 });
 
-it('notifies the user when it fails to sync', function () {
+it('notifies the user when it fails to sync', function (): void {
     Notification::fake();
 
     $mockProduct = Mockery::mock(Product::class);
@@ -60,6 +60,6 @@ it('notifies the user when it fails to sync', function () {
     Notification::assertSentTo(
         notifiable: $this->user,
         notification: NovaNotification::class,
-        callback: fn ($notification) => str_contains($notification->message, 'The sync process has failed')
+        callback: fn ($notification): bool => str_contains((string) $notification->message, 'The sync process has failed')
     );
 });
