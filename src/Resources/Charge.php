@@ -87,7 +87,7 @@ class Charge extends BaseResource
         ];
     }
 
-    protected function receiptAndInvoiceFields()
+    protected function receiptAndInvoiceFields(): array
     {
         return [
             Text::make('Receipt', 'receipt_url')
@@ -105,7 +105,7 @@ class Charge extends BaseResource
         ];
     }
 
-    protected function disputeAndRefundFields()
+    protected function disputeAndRefundFields(): array
     {
         return [
             Boolean::make('Disputed')->hideFromIndex(),
@@ -120,7 +120,7 @@ class Charge extends BaseResource
         ];
     }
 
-    protected function applicationFields()
+    protected function applicationFields(): array
     {
         return [
             Text::make('Application ID', 'application')->hideFromIndex(),
@@ -133,7 +133,7 @@ class Charge extends BaseResource
         ];
     }
 
-    protected function additionalFields()
+    protected function additionalFields(): array
     {
         return [
             Text::make('Balance Transaction ID', 'balance_transaction')

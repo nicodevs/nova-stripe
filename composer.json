@@ -13,7 +13,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Nicodevs\\NovaStripe\\": "src/"
+            "Nicodevs\\NovaStripe\\": "src/",
+            "Nicodevs\\NovaStripe\\Tests\\": "tests/"
         }
     },
     "extra": {
@@ -24,12 +25,25 @@
         }
     },
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require-dev": {
+        "orchestra/testbench": "^9.9",
+        "pestphp/pest": "^3.7",
+        "pestphp/pest-plugin-laravel": "^3.1",
         "rector/rector": "^2.0",
-        "tightenco/duster": "^3.1"
-    }
+        "tightenco/duster": "^3.1",
+        "laravel/nova": "^4.0,<=4.33.3"
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://nova.laravel.com"
+        }
+    ]
 }
