@@ -36,6 +36,7 @@ class Subscription extends BaseModel
         'default_payment_method' => 'json',
         'description' => 'string',
         'items' => 'json',
+        'synced_at' => 'datetime',
     ];
 
     protected $casts = [
@@ -49,6 +50,7 @@ class Subscription extends BaseModel
         'trial_end' => 'datetime',
         'default_payment_method' => 'json',
         'items' => 'json',
+        'synced_at' => 'datetime',
     ];
 
     public function customer(): BelongsTo

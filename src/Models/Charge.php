@@ -65,6 +65,7 @@ class Charge extends BaseModel
         'status' => 'string',
         'transfer_data' => 'json',
         'transfer_group' => 'string',
+        'synced_at' => 'datetime',
     ];
 
     protected $casts = [
@@ -77,6 +78,7 @@ class Charge extends BaseModel
         'source' => 'json',
         'transfer_data' => 'json',
         'created' => 'datetime',
+        'synced_at' => 'datetime',
     ];
 
     public function customer(): BelongsTo

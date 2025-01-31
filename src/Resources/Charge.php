@@ -77,6 +77,8 @@ class Charge extends BaseResource
 
             KeyValue::make('Metadata')->rules('json'),
 
+            DateTime::make('Synced At')->hideFromIndex(),
+
             Panel::make('Receipt and Invoice', $this->receiptAndInvoiceFields()),
 
             Panel::make('Disputes and Refunds', $this->disputeAndRefundFields()),
@@ -91,7 +93,7 @@ class Charge extends BaseResource
     {
         return [
             Text::make('Receipt', 'receipt_url')
-                ->displayUsing(fn ($value): string => '<a href="' . $value . '" target="_blank">Open Receipt</a>')
+                ->displayUsing(fn ($value): string => '<a href="' . $value . '" target="_blank" class="link-default">Open Receipt</a>')
                 ->asHtml()
                 ->hideFromIndex(),
 

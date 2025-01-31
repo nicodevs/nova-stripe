@@ -1,8 +1,9 @@
 <?php
 
+use Illuminate\Support\Carbon;
+use Stripe\Service\CustomerService;
 use Nicodevs\NovaStripe\Models\Customer;
 use Nicodevs\NovaStripe\Services\StripeClientService;
-use Stripe\Service\CustomerService;
 
 beforeEach(function (): void {
     $this->mockStripeClientService = Mockery::mock(StripeClientService::class);
@@ -56,6 +57,7 @@ it('performs sync operation', function (): void {
         'country' => 'US',
         'city' => 'San Francisco',
     ]));
+    expect(Carbon::hasFormat($result[0]['synced_at'], 'Y-m-d H:i:s'))->toBeTrue();
 
     expect($result[1]['id'])->toBe('cus_2');
     expect($result[1]['name'])->toBe('Mr. Bar');
@@ -63,6 +65,7 @@ it('performs sync operation', function (): void {
         'country' => 'US',
         'city' => 'Chicago',
     ]));
+    expect(Carbon::hasFormat($result[1]['synced_at'], 'Y-m-d H:i:s'))->toBeTrue();
 });
 
 it('queries correctly after sync operation', function (): void {
@@ -74,6 +77,7 @@ it('queries correctly after sync operation', function (): void {
     $item = $this->model->find('cus_1');
     expect($item->name)->toBe('Mr. Foo');
     expect($item->address['country'])->toBe('US');
+    expect($item['synced_at'])->toBeInstanceOf(Carbon::class);
 });
 
 it('builds correct stripe link attribute', function (): void {

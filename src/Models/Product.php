@@ -25,11 +25,13 @@ class Product extends BaseModel
         'active' => 'boolean',
         'default_price' => 'json',
         'recurring' => 'json',
+        'synced_at' => 'datetime',
     ];
 
     protected $casts = [
         'active' => 'boolean',
         'default_price' => 'json',
         'recurring' => 'json',
+        'synced_at' => 'datetime',
     ];
 }

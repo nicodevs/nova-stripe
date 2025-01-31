@@ -2,9 +2,11 @@
 
 namespace Nicodevs\NovaStripe\Resources;
 
+use Illuminate\Support\Str;
 use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Date;
+use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -48,11 +50,13 @@ class Subscription extends BaseResource
             Text::make('Description')
                 ->sortable(),
 
+            Text::make('Default Payment Method')->displayUsing(fn ($value) => isset($value['type']) ? Str::title($value['type']) : '-'),
+
             ...collect([
                 'Created',
                 'Current Period Start',
                 'Current Period End',
-            ])->map(fn ($key) => Date::make($key)),
+            ])->map(fn ($key) => Date::make($key)->filterable()),
 
             ...collect([
                 'Trial Start',
@@ -60,19 +64,19 @@ class Subscription extends BaseResource
                 'Cancel At',
                 'Canceled At',
                 'Ended At',
-            ])->map(fn ($key) => Date::make($key)
-                ->hideFromIndex()
-                ->filterable()),
+            ])->map(fn ($key) => Date::make($key)->hideFromIndex()),
 
             Text::make('Products', fn () => Product::whereIn('id', collect($this->items['data'])->pluck('price.product'))
                 ->get()
-                ->map(fn ($product): string => '<a class="link-default" href="/nova/resources/products/' . $product->id . '">' . $product->name . '</a>')
+                ->map(fn ($product): string => '<a class="link-default" href="/nova/resources/stripe-products/' . $product->id . '">' . $product->name . '</a>')
                 ->join('<br>'))->asHtml()->hideFromIndex(),
 
             Text::make('Details', 'stripeLink')
                 ->displayUsing(fn ($value): string => '<a href="' . $value . '" target="_blank" class="link-default">Open in Stripe Dashboard</a>')
                 ->asHtml()
                 ->hideFromIndex(),
+
+            DateTime::make('Synced At')->hideFromIndex(),
         ];
     }
 }

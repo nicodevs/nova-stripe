@@ -1,8 +1,9 @@
 <?php
 
+use Illuminate\Support\Carbon;
+use Stripe\Service\ProductService;
 use Nicodevs\NovaStripe\Models\Product;
 use Nicodevs\NovaStripe\Services\StripeClientService;
-use Stripe\Service\ProductService;
 
 beforeEach(function (): void {
     $this->mockStripeClientService = Mockery::mock(StripeClientService::class);
@@ -69,6 +70,7 @@ it('performs sync operation', function (): void {
         'unit_amount' => 100,
         'type' => 'recurring',
     ]));
+    expect(Carbon::hasFormat($result[0]['synced_at'], 'Y-m-d H:i:s'))->toBeTrue();
 
     expect($result[1]['id'])->toBe('prod_2');
     expect($result[1]['name'])->toBe('Bar');
@@ -79,6 +81,7 @@ it('performs sync operation', function (): void {
         'unit_amount' => 40,
         'type' => 'one_time',
     ]));
+    expect(Carbon::hasFormat($result[1]['synced_at'], 'Y-m-d H:i:s'))->toBeTrue();
 });
 
 it('queries correctly after sync operation', function (): void {
@@ -91,6 +94,7 @@ it('queries correctly after sync operation', function (): void {
     expect($item->name)->toBe('Bar');
     expect($item->id)->toBe('prod_2');
     expect($item->default_price['id'])->toBe('price_456');
+    expect($item['synced_at'])->toBeInstanceOf(Carbon::class);
 });
 
 it('builds correct stripe link attribute', function (): void {

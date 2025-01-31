@@ -4,6 +4,7 @@ namespace Nicodevs\NovaStripe\Resources;
 
 use Illuminate\Support\Str;
 use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -53,6 +54,8 @@ class Product extends BaseResource
                 ->displayUsing(fn ($value): string => '<a href="' . $value . '" target="_blank" class="link-default">Open in Stripe Dashboard</a>')
                 ->asHtml()
                 ->hideFromIndex(),
+
+            DateTime::make('Synced At')->hideFromIndex(),
         ];
     }
 }

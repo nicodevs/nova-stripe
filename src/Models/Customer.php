@@ -30,12 +30,14 @@ class Customer extends BaseModel
         'delinquent' => 'boolean',
         'default_source' => 'json',
         'created' => 'datetime',
+        'synced_at' => 'datetime',
     ];
 
     protected $casts = [
         'default_source' => 'json',
         'address' => 'json',
         'created' => 'datetime',
+        'synced_at' => 'datetime',
     ];
 
     public function charges()

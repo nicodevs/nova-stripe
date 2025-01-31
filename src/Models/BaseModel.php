@@ -32,27 +32,29 @@ abstract class BaseModel extends Model
 
     public function prepareForInsert(object $item): array
     {
-        $result = [];
+        $record = [];
 
         foreach ($this->schema as $key => $value) {
             $fieldValue = $item->{$key} ?? null;
 
             if ($value === 'json') {
                 if (is_object($fieldValue) && method_exists($fieldValue, 'toArray')) {
-                    $result[$key] = json_encode($fieldValue->toArray());
+                    $record[$key] = json_encode($fieldValue->toArray());
                 } elseif (is_array($fieldValue)) {
-                    $result[$key] = json_encode($fieldValue);
+                    $record[$key] = json_encode($fieldValue);
                 } else {
-                    $result[$key] = $fieldValue;
+                    $record[$key] = $fieldValue;
                 }
             } elseif ($value === 'datetime') {
-                $result[$key] = $fieldValue ? Carbon::createFromTimestamp($fieldValue)->toDateTimeString() : null;
+                $record[$key] = $fieldValue ? Carbon::createFromTimestamp($fieldValue)->toDateTimeString() : null;
             } else {
-                $result[$key] = $key === 'customer_id' ? $item->customer : $fieldValue;
+                $record[$key] = $key === 'customer_id' ? $item->customer : $fieldValue;
             }
         }
 
-        return $result;
+        $record['synced_at'] = now()->toDateTimeString();
+
+        return $record;
     }
 
     protected function stripeLink(): Attribute

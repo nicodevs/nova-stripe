@@ -65,6 +65,8 @@ class Customer extends BaseResource
                 ->asHtml()
                 ->hideFromIndex(),
 
+            DateTime::make('Synced At')->hideFromIndex(),
+
             HasMany::make('Charges'),
 
             HasMany::make('Subscriptions'),
