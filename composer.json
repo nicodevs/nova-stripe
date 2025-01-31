@@ -38,7 +38,7 @@
         "pestphp/pest-plugin-laravel": "^3.1",
         "rector/rector": "^2.0",
         "tightenco/duster": "^3.1",
-        "laravel/nova": "^4.0,<=4.33.3"
+        "laravel/nova": "^4.0 || ^5.0"
     },
     "repositories": [
         {
