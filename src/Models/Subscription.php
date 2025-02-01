@@ -1,6 +1,6 @@
 <?php
 
-namespace Nicodevs\NovaStripe\Models;
+namespace Tighten\NovaStripe\Models;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Sushi\Sushi;

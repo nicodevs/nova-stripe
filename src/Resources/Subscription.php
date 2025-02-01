@@ -1,6 +1,6 @@
 <?php
 
-namespace Nicodevs\NovaStripe\Resources;
+namespace Tighten\NovaStripe\Resources;
 
 use Illuminate\Support\Str;
 use Laravel\Nova\Fields\Badge;
@@ -10,11 +10,11 @@ use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Nicodevs\NovaStripe\Models\Product;
+use Tighten\NovaStripe\Models\Product;
 
 class Subscription extends BaseResource
 {
-    public static $model = \Nicodevs\NovaStripe\Models\Subscription::class;
+    public static $model = \Tighten\NovaStripe\Models\Subscription::class;
 
     public static $title = 'description';
 

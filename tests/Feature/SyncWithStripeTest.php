@@ -2,12 +2,12 @@
 
 use Illuminate\Support\Facades\Notification;
 use Laravel\Nova\Notifications\NovaNotification;
-use Nicodevs\NovaStripe\Jobs\SyncWithStripe;
-use Nicodevs\NovaStripe\Models\Charge;
-use Nicodevs\NovaStripe\Models\Customer;
-use Nicodevs\NovaStripe\Models\Product;
-use Nicodevs\NovaStripe\Models\Subscription;
-use Nicodevs\NovaStripe\Tests\TestUser;
+use Tighten\NovaStripe\Jobs\SyncWithStripe;
+use Tighten\NovaStripe\Models\Charge;
+use Tighten\NovaStripe\Models\Customer;
+use Tighten\NovaStripe\Models\Product;
+use Tighten\NovaStripe\Models\Subscription;
+use Tighten\NovaStripe\Tests\TestUser;
 
 beforeEach(function (): void {
     $this->user = TestUser::create([

@@ -1,9 +1,16 @@
-window.onload = function () {
+window.onload = showWelcomeDialog;
+
+document.addEventListener('inertia:navigate', showWelcomeDialog);
+
+function showWelcomeDialog() {
     if (!window.location.pathname.includes('/resources/stripe-')) return;
 
     if (localStorage.getItem('nova-stripe-intro-shown')) return;
 
+    if (document.getElementById('welcome-dialog')) return;
+
     const dialog = document.createElement('dialog');
+    dialog.id = 'welcome-dialog';
     dialog.style = 'position: relative; padding: 2rem; border-radius: 1rem; max-width: 36rem;';
     dialog.innerHTML = `
         <div class="mx-auto z-20 text-center">
@@ -29,4 +36,4 @@ window.onload = function () {
     dialog.onclose = function () {
         localStorage.setItem('nova-stripe-intro-shown', 1);
     };
-};
+}

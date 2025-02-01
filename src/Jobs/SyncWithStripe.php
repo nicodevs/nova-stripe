@@ -1,6 +1,6 @@
 <?php
 
-namespace Nicodevs\NovaStripe\Jobs;
+namespace Tighten\NovaStripe\Jobs;
 
 use Exception;
 use Illuminate\Bus\Queueable;
@@ -9,10 +9,10 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Laravel\Nova\Notifications\NovaNotification;
-use Nicodevs\NovaStripe\Models\Charge;
-use Nicodevs\NovaStripe\Models\Customer;
-use Nicodevs\NovaStripe\Models\Product;
-use Nicodevs\NovaStripe\Models\Subscription;
+use Tighten\NovaStripe\Models\Charge;
+use Tighten\NovaStripe\Models\Customer;
+use Tighten\NovaStripe\Models\Product;
+use Tighten\NovaStripe\Models\Subscription;
 
 class SyncWithStripe implements ShouldQueue
 {

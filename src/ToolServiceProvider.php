@@ -1,6 +1,6 @@
 <?php
 
-namespace Nicodevs\NovaStripe;
+namespace Tighten\NovaStripe;
 
 use Illuminate\Support\ServiceProvider;
 

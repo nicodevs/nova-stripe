@@ -1,12 +1,12 @@
 <?php
 
-namespace Nicodevs\NovaStripe\Resources;
+namespace Tighten\NovaStripe\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Resource;
-use Nicodevs\NovaStripe\Actions\Sync;
+use Tighten\NovaStripe\Actions\Sync;
 
 abstract class BaseResource extends Resource
 {

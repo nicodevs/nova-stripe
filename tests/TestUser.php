@@ -1,6 +1,6 @@
 <?php
 
-namespace Nicodevs\NovaStripe\Tests;
+namespace Tighten\NovaStripe\Tests;
 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Foundation\Auth\User as BaseUser;

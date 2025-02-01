@@ -1,6 +1,6 @@
 <?php
 
-namespace Nicodevs\NovaStripe\Resources;
+namespace Tighten\NovaStripe\Resources;
 
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\DateTime;
@@ -13,7 +13,7 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Customer extends BaseResource
 {
-    public static $model = \Nicodevs\NovaStripe\Models\Customer::class;
+    public static $model = \Tighten\NovaStripe\Models\Customer::class;
 
     public static $title = 'name';
 

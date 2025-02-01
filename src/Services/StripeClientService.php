@@ -1,6 +1,6 @@
 <?php
 
-namespace Nicodevs\NovaStripe\Services;
+namespace Tighten\NovaStripe\Services;
 
 use InvalidArgumentException;
 use Stripe\Service\ChargeService;

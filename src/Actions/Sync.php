@@ -1,6 +1,6 @@
 <?php
 
-namespace Nicodevs\NovaStripe\Actions;
+namespace Tighten\NovaStripe\Actions;
 
 use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Actions\ActionResponse;
@@ -8,7 +8,7 @@ use Laravel\Nova\Fields\ActionFields;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\BooleanGroup;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Nicodevs\NovaStripe\Jobs\SyncWithStripe;
+use Tighten\NovaStripe\Jobs\SyncWithStripe;
 
 class Sync extends Action
 {

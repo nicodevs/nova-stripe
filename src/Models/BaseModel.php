@@ -1,12 +1,12 @@
 <?php
 
-namespace Nicodevs\NovaStripe\Models;
+namespace Tighten\NovaStripe\Models;
 
 use Exception;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
-use Nicodevs\NovaStripe\Services\StripeClientService;
+use Tighten\NovaStripe\Services\StripeClientService;
 
 abstract class BaseModel extends Model
 {

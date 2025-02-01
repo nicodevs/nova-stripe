@@ -1,26 +1,29 @@
 {
-    "name": "nicodevs/nova-stripe",
-    "description": "Sync and explore your Stripe data from Nova.",
+    "name": "tightenco/nova-stripe",
+    "description": "A tool to create a quick Stripe dashboard in your Laravel Nova admin panels",
     "keywords": [
+        "tightenco",
+        "tighten",
         "laravel",
-        "nova"
+        "nova",
+        "stripe"
     ],
     "license": "MIT",
     "require": {
-        "php": "^8.1",
+        "php": "^8.1|^8.2|^8.3",
         "stripe/stripe-php": ">=5.0",
         "calebporzio/sushi": "^2.5"
     },
     "autoload": {
         "psr-4": {
-            "Nicodevs\\NovaStripe\\": "src/",
-            "Nicodevs\\NovaStripe\\Tests\\": "tests/"
+            "Tighten\\NovaStripe\\": "src/",
+            "Tighten\\NovaStripe\\Tests\\": "tests/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Nicodevs\\NovaStripe\\ToolServiceProvider"
+                "Tighten\\NovaStripe\\ToolServiceProvider"
             ]
         }
     },

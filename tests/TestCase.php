@@ -1,8 +1,8 @@
 <?php
 
-namespace Nicodevs\NovaStripe\Tests;
+namespace Tighten\NovaStripe\Tests;
 
-use Nicodevs\NovaStripe\ToolServiceProvider;
+use Tighten\NovaStripe\ToolServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 
 class TestCase extends Orchestra

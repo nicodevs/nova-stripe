@@ -1,16 +1,16 @@
 <?php
 
-namespace Nicodevs\NovaStripe;
+namespace Tighten\NovaStripe;
 
 use Illuminate\Http\Request;
 use Laravel\Nova\Menu\MenuItem;
 use Laravel\Nova\Menu\MenuSection;
 use Laravel\Nova\Nova;
 use Laravel\Nova\Tool;
-use Nicodevs\NovaStripe\Resources\Charge;
-use Nicodevs\NovaStripe\Resources\Customer;
-use Nicodevs\NovaStripe\Resources\Product;
-use Nicodevs\NovaStripe\Resources\Subscription;
+use Tighten\NovaStripe\Resources\Charge;
+use Tighten\NovaStripe\Resources\Customer;
+use Tighten\NovaStripe\Resources\Product;
+use Tighten\NovaStripe\Resources\Subscription;
 
 class NovaStripe extends Tool
 {

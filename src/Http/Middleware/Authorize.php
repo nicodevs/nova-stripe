@@ -1,12 +1,12 @@
 <?php
 
-namespace Nicodevs\NovaStripe\Http\Middleware;
+namespace Tighten\NovaStripe\Http\Middleware;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Laravel\Nova\Nova;
 use Laravel\Nova\Tool;
-use Nicodevs\NovaStripe\NovaStripe;
+use Tighten\NovaStripe\NovaStripe;
 
 class Authorize
 {

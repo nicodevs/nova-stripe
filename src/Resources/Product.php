@@ -1,6 +1,6 @@
 <?php
 
-namespace Nicodevs\NovaStripe\Resources;
+namespace Tighten\NovaStripe\Resources;
 
 use Illuminate\Support\Str;
 use Laravel\Nova\Fields\Boolean;
@@ -11,7 +11,7 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Product extends BaseResource
 {
-    public static $model = \Nicodevs\NovaStripe\Models\Product::class;
+    public static $model = \Tighten\NovaStripe\Models\Product::class;
 
     public static $title = 'name';
 

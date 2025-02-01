@@ -1,6 +1,6 @@
 <?php
 
-namespace Nicodevs\NovaStripe\Resources;
+namespace Tighten\NovaStripe\Resources;
 
 use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\BelongsTo;
@@ -15,7 +15,7 @@ use Laravel\Nova\Panel;
 
 class Charge extends BaseResource
 {
-    public static $model = \Nicodevs\NovaStripe\Models\Charge::class;
+    public static $model = \Tighten\NovaStripe\Models\Charge::class;
 
     public static $title = 'id';
 
