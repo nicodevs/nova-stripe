@@ -4,6 +4,7 @@
 # Laravel Nova Stripe Dashboard
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/tightenco/nova-stripe.svg?style=flat-square)](https://packagist.org/packages/tightenco/nova-stripe)
+
 [![Total Downloads](https://img.shields.io/packagist/dt/tightenco/nova-stripe.svg?style=flat-square)](https://packagist.org/packages/tightenco/nova-stripe)
 
 This package makes it easy to see high-level information about your application's [Stripe](https://stripe.com/) balance, charges, and customers in a Nova dashboard.
